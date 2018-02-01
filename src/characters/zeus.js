@@ -3,6 +3,7 @@ const CLASS = require('../deck_classes');
 module.exports = {
     name: 'Zeus',
     faction: 'Greek',
+    team: 'Zeus & Poseidon',
     health: 18,
     class: CLASS.BLUE, // provides basic atk/def cards (10)
     specials: [
