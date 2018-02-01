@@ -6,6 +6,11 @@ export default buildDeck;
 function buildDeck (char) {
     const deck = [];
 
+    if (char == null) {
+        console.error('buildDeck received null');
+        return;
+    }
+
     char.class.forEach(cardType => {
         for (let i = 0; i < cardType.qty; i++) {
             const options = {

@@ -1,22 +1,5 @@
-<template>
-  <div class="discards">
-    <br>
-    <br>
-    <h2>Discard Pile</h2>
-    <Card
-      v-for="card in cards"
-      v-bind:cardData="card"
-      v-bind:removeCard="removeCard"
-      v-bind:key="card.guid">
-    </Card>
-
-  </div>
-</template>
-
-
 <script>
 import Card from './Card.vue';
-
 
 export default {
   name: 'Hand',
@@ -27,21 +10,24 @@ export default {
     'cards',
     'removeCard',
   ],
-  data() {
-    return {
-
-    }
-  },
-  methods: {
-
-  }
 }
 </script>
+
+<template>
+  <div class="discards">
+    <h2>Discard Pile</h2>
+    <Card
+      v-for="card in cards"
+      v-bind:cardData="card"
+      v-bind:removeCard="removeCard"
+      v-bind:key="card.guid">
+    </Card>
+  </div>
+</template>
 
 <style scoped>
 h1, h2 {
   font-weight: normal;
-  font-size: 20px;
 }
 
 button {
