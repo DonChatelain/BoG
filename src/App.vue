@@ -3,8 +3,9 @@ import Hand from './components/Hand';
 import Discards from './components/Discards';
 import GodInfo from './components/GodInfo';
 
-import characters from './CharacterCollector';
 import buildDeck from './deckBuilder';
+
+import teamData from '../static/team_data.json'
 
 const STARTING_CARD_COUNT = 4;
 const VIEW = {
@@ -27,7 +28,7 @@ export default {
       cards: [],
       discardPile: [],
       showDiscardPile: false,
-      characters,
+      teamData,
       showInfoPanel: true,
       isHoverDrawPile: false,
       drawPileText: 'Battle of Gods',
@@ -94,11 +95,7 @@ export default {
       this.discardPile = [];
     },
     getTeamByName(name) {
-      let team = null;
-      Object.keys(characters).forEach(char => {
-        if (characters[char].team === name) team = characters[char];
-      });
-      return team;
+      return teamData[name];
     },
     onHoverDrawPile() {
       this.isHoverDrawPile = true;
@@ -162,10 +159,11 @@ export default {
 
     <GodInfo
       v-if="getView === VIEW.INFO"
-      v-bind:characters="characters"
+      v-bind:characters="teamData"
       v-bind:setupDeck="setupDeck"
       v-bind:viewHand="viewHand"
-      v-bind:teamName="teamName">
+      v-bind:teamName="teamName"
+      v-bind:currentTeamData="getTeamByName(teamName)">
     </GodInfo>
 
     <Discards

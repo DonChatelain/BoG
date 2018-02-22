@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     
-    <h1>{{cardData.character}}</h1>
+    <h1>{{cardData.owner}}</h1>
     <h2>{{ cardData.name }}</h2>
     <p class="atk-def">{{cardData.atk}} / {{cardData.def}}</p>
     <p class="info">{{cardData.info}}</p>

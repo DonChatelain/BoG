@@ -12,6 +12,8 @@
     "deploy": "node ./node_modules/vue-gh-pages/index.js"
   },
   "dependencies": {
+    "google-auth-library": "^0.12.0",
+    "googleapis": "^26.0.1",
     "guid": "0.0.12",
     "vue": "^2.5.2"
   },
