@@ -12,6 +12,8 @@ export default {
     'teamName',
     'currentTeamData',
     'viewHand',
+    'viewInfo',
+    'viewTeamList',
   ],
   computed: {
   },
@@ -20,7 +22,7 @@ export default {
       teams: Object.keys(this.characters),
       selectedTeamName: this.teamName,
       init: (this.teamName !== 'default'),
-      showTeamList: false,
+      showingTeamList: false,
     }
   },
   methods: {
@@ -29,7 +31,12 @@ export default {
       this.viewHand();
     },
     hideList() {
-      this.showTeamList = false;
+      this.showingTeamList = false;
+      this.viewInfo();
+    },
+    showTeamList() {
+      this.showingTeamList = true;
+      this.viewTeamList();
     }
   }
 }
@@ -38,7 +45,8 @@ export default {
 <template>
   <div class="god-info">
 
-    <section>
+    <section
+      v-if="!showingTeamList">
       <h2>Select your Team</h2>
       <select
         v-model="selectedTeamName"
@@ -63,13 +71,14 @@ export default {
 
     </section>
 
-    <div class="view-team-list-btn"
-      v-on:click="showTeamList = true">
+    <button class="button-topright"
+      v-if="!showingTeamList"
+      v-on:click="showTeamList()">
       All Teams
-    </div>
+    </button>
 
     <TeamList
-      v-if="showTeamList"
+      v-if="showingTeamList"
       v-bind:hideList="hideList"
       v-bind:teams="characters">
     </TeamList>
@@ -83,27 +92,9 @@ h1, h2 {
   /* font-size: 20px; */
 }
 
-button {
-  padding: 5px;
-  background: transparent;
-  left: 20px;
-  cursor: pointer;
-}
-
 section {
   background: white;
   width: 100%;
 }
 
-.view-team-list-btn {
-  cursor: pointer;
-  width: 100px;
-  height: 50px;
-  margin: 50px auto;
-  background: white;
-  border: 1px solid lightgray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 </style>

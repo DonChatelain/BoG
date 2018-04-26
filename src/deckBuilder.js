@@ -2,7 +2,7 @@ import guid from 'guid';
 
 import CLASS from './deck_classes';
 
-export default buildDeck;
+export { buildDeck, shuffle };
 
 function buildDeck (teamData) {
     const deck = [];

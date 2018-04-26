@@ -2,8 +2,9 @@
 import Hand from './components/Hand';
 import Discards from './components/Discards';
 import GodInfo from './components/GodInfo';
+import SpecialFunction from './components/SpecialFunction';
 
-import buildDeck from './deckBuilder';
+import { buildDeck, shuffle } from './deckBuilder';
 
 import teamData from '../static/team_data.json'
 
@@ -12,7 +13,25 @@ const VIEW = {
   HAND: 0,
   INFO: 1,
   DISCARD: 2,
+  TEAM_LIST: 3,
+  FUNCTION: 4,
 };
+// MUST BE UPDATED IF ANY OF THESE CARD NAMES CHANGE
+const SPECIAL_FUNCTION_CARDS = {
+  EYE_OF_HORUS: 'Eye of Horus',
+  VALKYRIE_TOWER: 'Valkyrie Tower',
+  HARVEST_MOON: 'Harvest Moon',
+  ANIMAL_SACRIFICE: 'Animal Sacrifice',
+}
+
+window.onbeforeunload = confirmNavigateAway;
+window.onpagehide = confirmNavigateAway;
+
+function confirmNavigateAway (e) {
+  const dialogText = 'All data will be lost';
+  e.returnValue = dialogText;
+  return dialogText;
+}
 
 export default {
   name: 'App',
@@ -20,6 +39,7 @@ export default {
     Hand,
     Discards,
     GodInfo,
+    SpecialFunction,
   },
   data() {
     return {
@@ -35,6 +55,8 @@ export default {
       VIEW,
       currentView: VIEW.INFO,
       initialized: false,
+      specialFunctionData: {},
+      specialFunctionCards: SPECIAL_FUNCTION_CARDS,
     }
   },
   computed: {
@@ -65,9 +87,12 @@ export default {
       } else if (this.currentView === VIEW.HAND) {
         const foundIndex = this.cards.findIndex(c => c.guid === card.guid);
         if (foundIndex != -1) {
+          this.execSpecialFunction(card.name);
           this.discardPile.unshift(card);
           this.cards.splice(foundIndex, 1);
         }
+      } else if (this.currentView === VIEW.FUNCTION) {
+        this.cards.unshift(card);
       }
     },
     viewDiscard() {
@@ -81,6 +106,12 @@ export default {
     },
     viewHand() {
       this.currentView = VIEW.HAND;
+    },
+    viewTeamList() {
+      this.currentView = VIEW.TEAM_LIST;
+    },
+    viewFunction() {
+      this.currentView = VIEW.FUNCTION;
     },
     viewInfo() {
       this.currentView = VIEW.INFO;
@@ -105,23 +136,72 @@ export default {
       this.isHoverDrawPile = false;
       this.drawPileText = 'Battle of Gods';
     },
-
+    execSpecialFunction(cardName) {
+      switch(cardName) {
+        case SPECIAL_FUNCTION_CARDS.EYE_OF_HORUS:
+          // choose 1 card from deck and move into hand, and reshuffle deck
+          this.specialFunctionData = {
+            name: cardName,
+            info: 'Choose 1 card from your deck to place into your hand; Your deck will then be reshuffled',
+          };
+        break;
+        case SPECIAL_FUNCTION_CARDS.VALKYRIE_TOWER: 
+          // look at top 5 from deck, move 1 into hand and reshuffle deck
+          this.specialFunctionData = {
+            name: cardName,
+            info: 'View the top 5 cards from your deck and choose 1 to place into your hand; Your deck will then be reshuffled'
+          };
+        break;
+        case SPECIAL_FUNCTION_CARDS.HARVEST_MOON: 
+          // shuffle discards into deck
+          this.specialFunctionData = {
+            name: cardName,
+            info: 'Your discard pile has been shuffled into your deck'
+          };
+        break;
+        case SPECIAL_FUNCTION_CARDS.ANIMAL_SACRIFICE: 
+          // look at top 4 from deck, move 1 into hand, place other 3 back on top of draw pile in desired order
+          this.specialFunctionData = {
+            name: cardName,
+            info: 'View the top 4 cards from your deck and choose 1 to place into your hand; You may then place the other 3 cards back on top of your draw pile in any order'
+          }
+        break;
+        default:
+          this.specialFunctionData = {};
+          break;
+      }
+      if (this.specialFunctionData.name != null) {
+        this.viewFunction();
+      }
+    },
+    shuffleDiscardsIntoDeck() {
+      console.log('shuffle discards into deck');
+      let deck = this.deck.concat(this.discardPile.splice(0));
+      this.deck = shuffle(deck);
+    },
+    returnToDeck(cards) {
+      this.deck = cards.concat(this.deck);
+    },
+    shuffle() {
+      this.deck = shuffle(this.deck);
+    }
   }
 }
 </script>
 
 <template>
-  <div id="app">
+  <div id="app"
+    v-on:click="preventZoom">
     <header>
 
       <h1
-        v-if="!initialized"
+        v-if="!initialized && getView === VIEW.INFO"
         style="width: 100%;">
         Battle of Gods
       </h1>
 
       <button 
-        v-show="initialized"
+        v-show="initialized && getView === VIEW.HAND || getView === VIEW.INFO"
         v-bind:class="{ 'hidden': getView === VIEW.DISCARD || !initialized}"
         v-on:click="getView === VIEW.HAND ? viewInfo() : viewHand()">
         {{viewInfoText()}}
@@ -143,7 +223,7 @@ export default {
       </div>
 
       <button
-        v-show="initialized"
+        v-show="initialized && getView !== VIEW.FUNCTION"
         v-bind:class="{ 'hidden': getView === VIEW.INFO }"
         v-on:click="getView === VIEW.HAND ? viewDiscard() : viewHand()">
         {{viewDiscardText()}}
@@ -158,10 +238,12 @@ export default {
     </Hand>
 
     <GodInfo
-      v-if="getView === VIEW.INFO"
+      v-if="getView === VIEW.INFO || getView === VIEW.TEAM_LIST"
       v-bind:characters="teamData"
       v-bind:setupDeck="setupDeck"
       v-bind:viewHand="viewHand"
+      v-bind:viewTeamList="viewTeamList"
+      v-bind:viewInfo="viewInfo"
       v-bind:teamName="teamName"
       v-bind:currentTeamData="getTeamByName(teamName)">
     </GodInfo>
@@ -171,11 +253,30 @@ export default {
       v-bind:cards="discardPile"
       v-bind:removeCard="removeCard">
     </Discards>
+
+    <SpecialFunction
+      v-if="getView === VIEW.FUNCTION"
+      v-bind:specialFunctionData="specialFunctionData"
+      v-bind:specialFunctionCards="specialFunctionCards"
+      v-bind:viewHand="viewHand"
+      v-bind:shuffleDiscardsIntoDeck="shuffleDiscardsIntoDeck"
+      v-bind:deck="deck"
+      v-bind:removeCard="removeCard"
+      v-bind:returnToDeck="returnToDeck"
+      v-bind:shuffle="shuffle">
+    </SpecialFunction>
     
   </div>
 </template>
 
 <style>
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -183,6 +284,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  box-sizing: border-box;
+}
+
+h1 {
+  margin-top: 35%;
 }
 
 .hidden {
@@ -228,6 +334,30 @@ header button {
   width: 80px;
   height: 60px;
   background: transparent;
+  border: 1px solid rgb(237, 237, 237);
+  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
+}
+
+.button-topright {
+  width: 80px;
+  height: 60px;
+  background: transparent;
+  border: 1px solid rgb(237, 237, 237);
+  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.button-topleft {
+  width: 80px;
+  height: 60px;
+  background: transparent;
+  border: 1px solid rgb(237, 237, 237);
+  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 button {
@@ -235,8 +365,9 @@ button {
   font-weight: bold;
   background: transparent;
   cursor: pointer;
-  opacity: 0.7;
+  /* opacity: 0.7; */
   user-select: none;
+
 }
 button:hover {
   opacity: 1;

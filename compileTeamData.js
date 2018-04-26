@@ -30,8 +30,9 @@ module.exports = function(rows) {
         team.addCharacter(row[COL.CHAR_NAME]);
         // primary character health
         team.addHealth(row[COL.HEALTH]);
-        // deck color class
+        // deck color class + add basic cards
         team.setDeckClass(row[COL.DECK_CLASS]);
+        team.setDeckClass(row[COL.DECK_CLASS]); // HACK - adding same basic cards twice for all chars to share
   
         teams[teamName] = team;
   
@@ -39,6 +40,7 @@ module.exports = function(rows) {
         // adding support character + health
         teams[teamName].addCharacter(row[COL.CHAR_NAME]);
         teams[teamName].addHealth(row[COL.HEALTH]);
+        // teams[teamName].setSupportClass(row[COL.DECK_CLASS]); // instead we're now just adding 2x primary char basic cards for all to share
       }
   
       // add cards
@@ -54,7 +56,7 @@ module.exports = function(rows) {
         });
       }
     }
-    console.log('successfully fetched teams', teams);
+    console.log('Team data updated');
     return teams;
 }
 
@@ -65,6 +67,7 @@ function Team(name) {
     this.totalAtk = 0;
     this.totalDef = 0;
     this.deckClass = null;
+    this.supportClass = null;
     this.characters = [];
     this.cards = [];
     this.addCharacter = (char) => {
@@ -96,10 +99,36 @@ function Team(name) {
       basicCards.forEach(c => {
         const card = Object.assign({}, c);
         for (let i = 0; i < card.qty; i++) {
-          card.owner = this.characters[0];
+          card.owner = this.name;
           this.addCard(card);
         }
       });
     };
+    this.setSupportClass = (type) => {
+      this.supportClass = type;
+      let basicCards;
+      if (type === 'MAJOR') {
+        basicCards = CLASSES[this.deckClass];
+        if (!basicCards) return console.warn('Cannot find deck class: ', color);
+
+        basicCards.forEach(c => {
+          const card = Object.assign({}, c);
+          for (let i = 0; i < card.qty; i++) {
+            card.owner = this.characters[1]; // support char (error for Fenrir & Jormungand)
+            this.addCard(card);
+          }
+        });
+      } else if (type === 'MINOR') {
+        basicCards = CLASSES['MINOR_WEAK'];
+
+        basicCards.forEach(c => {
+          const card = Object.assign({}, c);
+          for (let i = 0; i < card.qty; i++) {
+            card.owner = this.characters[1];
+            this.addCard(card);
+          }
+        });
+      }
+    }
   }
   

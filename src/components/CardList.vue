@@ -2,7 +2,7 @@
 import Card from './Card.vue';
 
 export default {
-  name: 'Hand',
+  name: 'CardList',
   components: {
     Card,
   },
@@ -22,11 +22,7 @@ export default {
 </script>
 
 <template>
-  <div class="hand">
-
-    <section>
-      <p>Cards in Hand: <strong>{{cards.length}}</strong></p>
-    </section>
+  <div class="">
 
     <Card
       v-for="card in cards"
