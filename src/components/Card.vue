@@ -4,6 +4,7 @@ export default {
   props: [
       'cardData',
       'removeCard',
+      'isCardChosen',
   ],
   data () {
     return {
@@ -11,12 +12,7 @@ export default {
     }
   },
   methods: {
-      chooseCard(cardData) {
-        this.disabled = true;
-        this.removeCard(cardData);
-      },
       onTap() {
-          console.log("TAP!", this)
           this.$el.style.left = '400px';
           setTimeout(() => this.removeCard(this.cardData), 500);
       }
@@ -26,20 +22,17 @@ export default {
 
 <template>
   <v-touch class="card"
-    v-bind:class="{ disabled: this.disabled === true }"
+    v-bind:class="{ disabled: this.isCardChosen === true }"
     v-on:tap="onTap"
     v-bind:tap-options="{ taps: 2 }">
     
     <h1>{{cardData.owner}}</h1>
-    <h2>{{ cardData.name }}</h2>
-    <p class="atk-def">{{cardData.atk}} / {{cardData.def}}</p>
-    <p class="info">{{cardData.info}}</p>
-    <div class="btn-container">
-        <button
-            v-on:click="chooseCard(cardData)">
-            X
-        </button>
+    <div class="name-and-numbers">
+        <h2>{{ cardData.name }}</h2>
+        <p class="atk-def">{{cardData.atk}} / {{cardData.def}}</p>
     </div>
+    <p class="info">{{cardData.info}}</p>
+
   </v-touch>
 </template>
 
@@ -47,7 +40,8 @@ export default {
 .card {
     width: 100%;
     min-height: 120px;
-    border-bottom: 1px solid lightblue;
+    background: #f1f1f1;
+    border-bottom: 1px solid #d4d4d4;
     text-align: left;
     position: relative;
     left: 0;
@@ -56,31 +50,42 @@ export default {
     transition: left 500ms;
 }
 
+.card:first-child {
+    border-top: 1px solid #d4d4d4;    
+}
+
+.name-and-numbers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20px;
+}
+
 .card.disabled {
-    opacity: 0.2;
+    opacity: 0.8;
     pointer-events: none;
-    display: none;
 }
 
 h1, h2{
-    padding: 5px;
+    padding: 5px 10px;
     margin: 0;
-    width: 80%;
 }
 
 h1 {
     font-size: 16px;
+    font-weight: normal;
+    max-width: 100%;
 }
 h2 {
     font-size: 18px;
+    font-weight: bold;
+    max-width: 80%;
 }
 
 p.atk-def {
-    position: absolute;
     font-weight: bolder;
     font-size: 20px;
-    top: -10px;
-    right: 20px;
+    padding-right: 15px;
 }
 
 p.info {

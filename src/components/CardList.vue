@@ -9,6 +9,7 @@ export default {
   props: [
     'cards',
     'removeCard',
+    'isCardChosen',
   ],
   data() {
     return {
@@ -28,7 +29,8 @@ export default {
       v-for="card in cards"
       v-bind:cardData="card"
       v-bind:removeCard="removeCard"
-      v-bind:key="card.guid">
+      v-bind:key="card.guid"
+      v-bind:isCardChosen="isCardChosen">
     </Card>
   </div>
 </template>

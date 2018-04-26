@@ -20,12 +20,15 @@ export default {
   ],
   data() {
     return {
-      finished: false || this.specialFunctionData.name === this.specialFunctionCards.HARVEST_MOON,
+      // finished: false || this.specialFunctionData.name === this.specialFunctionCards.HARVEST_MOON,
       showCardList: this.specialFunctionData.name !== this.specialFunctionCards.HARVEST_MOON, 
       cardsFromDeck: [],
+      isCardChosen: false || this.specialFunctionData.name === this.specialFunctionCards.HARVEST_MOON,
     }
   },
   created() {
+      window.scrollTo(0, 0);
+
       switch(this.specialFunctionData.name) {
         case this.specialFunctionCards.VALKYRIE_TOWER:
           // 5 cards
@@ -52,7 +55,7 @@ export default {
 
         default: break;
       }
-
+      window.scrollTo(0, 0);
       this.viewHand();
     },
     chooseCard(card) {
@@ -61,11 +64,13 @@ export default {
         this.cardsFromDeck.splice(foundIndex, 1);
         this.returnToDeck(this.cardsFromDeck);
         this.removeCard(card);
-        if (this.specialFunctionData.name === this.specialFunctionCards.EYE_OF_HORUS) {
+        if (this.specialFunctionData.name === this.specialFunctionCards.EYE_OF_HORUS
+          || this.specialFunctionData.name === this.specialFunctionCards.VALKYRIE_TOWER) {
           this.shuffle();
           this.viewHand(); // should probably just call this.execSpecialFunction()
+          window.scrollTo(0,0);
         }
-        this.finished = true;
+        this.isCardChosen = true;
       }
     }
   }
@@ -74,11 +79,11 @@ export default {
 
 <template>
   <div class="">
-    <p>You have played</p>
-    <h2>{{specialFunctionData.name}}</h2>
-    <p>{{specialFunctionData.info}}</p>
+    <span>You have played</span>
+    <p>{{specialFunctionData.name}}</p>
+    <p class="info">{{specialFunctionData.info}}</p>
     <button
-      v-bind:class="{ 'disabled': !finished }"
+      v-bind:class="{ 'disabled': !isCardChosen }"
       v-on:click="execSpecialFunction()">
       DONE
     </button>
@@ -86,7 +91,8 @@ export default {
     <CardList
       v-if="showCardList"
       v-bind:cards="cardsFromDeck"
-      v-bind:removeCard="chooseCard">
+      v-bind:removeCard="chooseCard"
+      v-bind:isCardChosen="isCardChosen">
     </CardList>
   </div>
 </template>
@@ -96,12 +102,29 @@ h1, h2 {
   font-weight: normal;
 }
 
+span {
+  font-size: 12px;
+}
+
+p {
+  font-weight: bold;
+  margin: 2px;
+}
+
+p.info {
+  font-weight: normal;
+  font-size: 14px;
+  padding: 10px;
+}
+
 button {
   border: 2px solid rgb(83, 182, 215);
   padding: 5px 20px;
   font-size: 18px;
+  width: 90%;
   cursor: pointer;
   color: rgb(83, 182, 215);
+  margin-bottom: 30px;
 }
 button:hover:not(.disabled) {
   background: rgb(83, 182, 215);

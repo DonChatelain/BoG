@@ -75,7 +75,9 @@ export default {
       this.resetDiscards();
     },
     drawCard() {
-      return this.deck.shift();
+      if (this.deck.length > 0) {
+        this.cards.unshift(this.deck.shift());
+      }
     },
     removeCard(card) {
       if (this.currentView === VIEW.DISCARD) {
@@ -136,20 +138,21 @@ export default {
       this.isHoverDrawPile = false;
       this.drawPileText = 'Battle of Gods';
     },
+    // TODO move this logic to special function component
     execSpecialFunction(cardName) {
       switch(cardName) {
         case SPECIAL_FUNCTION_CARDS.EYE_OF_HORUS:
           // choose 1 card from deck and move into hand, and reshuffle deck
           this.specialFunctionData = {
             name: cardName,
-            info: 'Choose 1 card from your deck to place into your hand; Your deck will then be reshuffled',
+            info: 'Double-tap one card from your deck to place into your hand; Your deck will then be reshuffled',
           };
         break;
         case SPECIAL_FUNCTION_CARDS.VALKYRIE_TOWER: 
           // look at top 5 from deck, move 1 into hand and reshuffle deck
           this.specialFunctionData = {
             name: cardName,
-            info: 'View the top 5 cards from your deck and choose 1 to place into your hand; Your deck will then be reshuffled'
+            info: 'View the top 5 cards from your deck and double-tap one to place into your hand; Your deck will then be reshuffled'
           };
         break;
         case SPECIAL_FUNCTION_CARDS.HARVEST_MOON: 
@@ -163,7 +166,7 @@ export default {
           // look at top 4 from deck, move 1 into hand, place other 3 back on top of draw pile in desired order
           this.specialFunctionData = {
             name: cardName,
-            info: 'View the top 4 cards from your deck and choose 1 to place into your hand; You may then place the other 3 cards back on top of your draw pile in any order'
+            info: 'View the top 4 cards from your deck; double-tap one to place it into your hand; The remaining 3 cards will be placed on top of your draw pile bottom-first (i.e. the card on top here will be the next card you draw)'
           }
         break;
         default:
@@ -208,7 +211,7 @@ export default {
       </button>
 
       <div class="drawpile"
-        v-on:click="cards.unshift(drawCard())"
+        v-on:click="drawCard"
         v-show="initialized"
         v-bind:class="{ 'hover-drawpile': isHoverDrawPile, 'hidden': getView !== VIEW.HAND }"
         v-on:mouseover="onHoverDrawPile()"

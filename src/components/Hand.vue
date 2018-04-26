@@ -22,18 +22,20 @@ export default {
 </script>
 
 <template>
-  <div class="hand">
-
+  <div>
     <section>
-      <p>Cards in Hand: <strong>{{cards.length}}</strong></p>
+      <span>Cards in Hand: <strong>{{cards.length}}</strong></span>
+      <span class="help">Double-tap a card to play it</span>
     </section>
-
-    <Card
-      v-for="card in cards"
-      v-bind:cardData="card"
-      v-bind:removeCard="removeCard"
-      v-bind:key="card.guid">
-    </Card>
+    
+    <div class="hand">
+      <Card
+        v-for="card in cards"
+        v-bind:cardData="card"
+        v-bind:removeCard="removeCard"
+        v-bind:key="card.guid">
+      </Card>
+    </div>
   </div>
 </template>
 
@@ -46,7 +48,12 @@ export default {
     margin: 20px auto;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  section span.help {
+    font-size: 12px;
   }
 </style>
