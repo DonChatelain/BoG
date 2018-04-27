@@ -349,8 +349,8 @@ div.drawpile {
 header button {
   width: 80px;
   height: 60px;
-  /* border: 1px solid #ffdcdc; */
-  /* box-shadow: 0 0 1px 0 rgb(197, 197, 197); */
+  border: 1px solid #ffdcdc; 
+  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
   font-size: 11px;
@@ -361,8 +361,8 @@ header button {
   width: 80px;
   height: 60px;
   background: rgba(0,0,0,0.1);
-  /* border: 1px solid #ffdcdc; */
-  /* box-shadow: 0 0 1px 0 rgb(197, 197, 197); */
+  border: 1px solid #ffdcdc;
+  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
   position: absolute;
   color: #fff;
   top: 0;
@@ -374,8 +374,8 @@ header button {
   width: 80px;
   height: 60px;
   background: rgba(0,0,0,0.1);
-  /* border: 1px solid #ffdcdc;
-  box-shadow: 0 0 1px 0 rgb(197, 197, 197); */
+  border: 1px solid #ffdcdc;
+  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
   position: absolute;
   top: 0;
   left: 0;
