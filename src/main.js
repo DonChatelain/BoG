@@ -21,7 +21,7 @@ Vue.mixin({
         if (!dt || dt > 500) return; // not double-tap
       
         e.preventDefault();
-        e.target.click();
+        // e.target.click();
       }
     }
   }

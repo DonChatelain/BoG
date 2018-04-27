@@ -9,11 +9,15 @@ export default {
     'hideList',
   ],
   computed: {
-
+      teamList() {
+          if (Object.keys(this.teams).length & 2 !== 0) {
+              this.teams['placeholder'] = {name: 'Mesoamerican Placeholder'};
+          }
+          return this.teams;
+      }
   },
   data() {
      return {
-         teamList: this.teams,
      } 
   },
   methods: {
@@ -46,10 +50,14 @@ export default {
 </template>
 
 <style scoped>
+
     .main {
         width: 100%;
         height: 100vh;
-        background: white;
+    }
+
+    h3 {
+        margin: 50px 0;
     }
 
     .card-count {
@@ -81,6 +89,8 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        background: #fff;
+        color: #000;
     }
 
     .icon-container {

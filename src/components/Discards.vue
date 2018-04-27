@@ -14,20 +14,47 @@ export default {
 </script>
 
 <template>
-  <div class="discards">
-    <h2>Discard Pile</h2>
-    <Card
-      v-for="card in cards"
-      v-bind:cardData="card"
-      v-bind:removeCard="removeCard"
-      v-bind:key="card.guid">
-    </Card>
+  <div>
+    <section>
+      <span>Discard Pile ({{cards.length}})</span>
+      <span class="help">Double-tap a card to return it to your hand</span>
+    </section>
+    <div class="discards">
+      <Card
+        v-for="card in cards"
+        v-bind:cardData="card"
+        v-bind:removeCard="removeCard"
+        v-bind:key="card.guid">
+      </Card>
+    </div>
   </div>
 </template>
 
 <style scoped>
 h1, h2 {
   font-weight: normal;
+}
+
+section {
+    margin: 3px auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+span {
+  font-size: 13px;
+}
+
+span.help {
+  font-size: 12px;
+}
+
+.discards {
+  position: absolute;
+  top: 100px;
 }
 
 button {

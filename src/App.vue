@@ -102,9 +102,9 @@ export default {
     },
     viewDiscardText() {
       if (this.currentView === VIEW.DISCARD) {
-        return 'Back';
+        return 'Return to Hand';
       } 
-      return 'View Discard Pile';
+      return 'Discard Pile';
     },
     viewHand() {
       this.currentView = VIEW.HAND;
@@ -120,9 +120,9 @@ export default {
     },
     viewInfoText() {
       if (this.currentView === VIEW.INFO) {
-        return 'Back';
+        return 'Return to Hand';
       }
-      return this.teamName;
+      return 'Reselect Team';
     },
     resetDiscards() {
       this.discardPile = [];
@@ -197,12 +197,6 @@ export default {
     v-on:click="preventZoom">
     <header>
 
-      <h1
-        v-if="!initialized && getView === VIEW.INFO"
-        style="width: 100%;">
-        Battle of Gods
-      </h1>
-
       <button 
         v-show="initialized && getView === VIEW.HAND || getView === VIEW.INFO"
         v-bind:class="{ 'hidden': getView === VIEW.DISCARD || !initialized}"
@@ -232,6 +226,13 @@ export default {
         {{viewDiscardText()}}
       </button>
     </header>
+
+    <h1
+      class="main-title"
+      v-if="!initialized && getView === VIEW.INFO"
+      style="width: 100%;">
+      Battle of Gods
+    </h1>
     
     <Hand
       v-if="getView === VIEW.HAND"
@@ -275,6 +276,15 @@ export default {
 <style>
 
 body {
+  background: -webkit-linear-gradient(116deg, #c94b4b, #4b134f);
+  background: linear-gradient(116deg, #c94b4b, #4b134f);
+  /* background: -webkit-linear-gradient(106deg, #A8CABA, #5D4157);  
+  background: linear-gradient(106deg, #A8CABA, #5D4157);  */
+
+  min-height: 100vh;
+}
+
+body {
   margin: 0;
   overflow-x: hidden;
   user-select: none;
@@ -286,12 +296,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #fff;
   box-sizing: border-box;
 }
 
-h1 {
-  margin-top: 35%;
+h1.main-title {
+  margin: 100px auto 50px auto;
+  text-shadow: #4b134f 3px 3px 0px, #4b134f 4px 4px 0px, #4b134f 5px 5px 0px, #4b134f 6px 6px 0px, #4b134f 7px 7px 0px, #4b134f 8px 8px 0px, #4b134f 9px 9px 0px, #4b134f 10px 10px 0px, #4b134f 11px 11px 0px, #4b134f 12px 12px 0px, #4b134f 13px 13px 0px, #4b134f 14px 14px 0px;
 }
 
 .hidden {
@@ -315,6 +326,8 @@ div.drawpile {
   box-shadow: 0 0 1px 0 rgb(197, 197, 197);
   transition: box-shadow 200ms;
   user-select: none;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.1);
 }
 
 .hover-drawpile {
@@ -336,31 +349,38 @@ div.drawpile {
 header button {
   width: 80px;
   height: 60px;
-  background: transparent;
-  border: 1px solid rgb(237, 237, 237);
-  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
+  /* border: 1px solid #ffdcdc; */
+  /* box-shadow: 0 0 1px 0 rgb(197, 197, 197); */
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+  font-size: 11px;
+  background: rgba(0,0,0,0.1);
 }
 
 .button-topright {
   width: 80px;
   height: 60px;
-  background: transparent;
-  border: 1px solid rgb(237, 237, 237);
-  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
+  background: rgba(0,0,0,0.1);
+  /* border: 1px solid #ffdcdc; */
+  /* box-shadow: 0 0 1px 0 rgb(197, 197, 197); */
   position: absolute;
+  color: #fff;
   top: 0;
   right: 0;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
 }
 
 .button-topleft {
   width: 80px;
   height: 60px;
-  background: transparent;
-  border: 1px solid rgb(237, 237, 237);
-  box-shadow: 0 0 1px 0 rgb(197, 197, 197);
+  background: rgba(0,0,0,0.1);
+  /* border: 1px solid #ffdcdc;
+  box-shadow: 0 0 1px 0 rgb(197, 197, 197); */
   position: absolute;
   top: 0;
   left: 0;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
 }
 
 button {

@@ -93,8 +93,11 @@ h1, h2 {
 }
 
 section {
-  background: white;
   width: 100%;
+}
+
+select {
+  color: #fff;
 }
 
 </style>

@@ -17,6 +17,9 @@ export default {
   },
   methods: {
 
+  },
+  created() {
+    window.scrollTo(0, 0);
   }
 }
 </script>
@@ -24,7 +27,7 @@ export default {
 <template>
   <div>
     <section>
-      <span>Cards in Hand: <strong>{{cards.length}}</strong></span>
+      <span>Current Hand ({{cards.length}})</span>
       <span class="help">Double-tap a card to play it</span>
     </section>
     
@@ -41,16 +44,22 @@ export default {
 
 <style scoped>
   .hand {
-    margin-top: 30px;
+    position: absolute;
+    top: 100px;
+    width: 100%;
   }
   section {
     height: 33px;
-    margin: 20px auto;
+    margin: 3px auto;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  section span {
+    font-size: 13px;
   }
 
   section span.help {

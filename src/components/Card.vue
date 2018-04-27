@@ -24,7 +24,7 @@ export default {
   <v-touch class="card"
     v-bind:class="{ disabled: this.isCardChosen === true }"
     v-on:tap="onTap"
-    v-bind:tap-options="{ taps: 2 }">
+    v-bind:tap-options="{ taps: 2, threshold: 10 }">
     
     <h1>{{cardData.owner}}</h1>
     <div class="name-and-numbers">
@@ -38,9 +38,10 @@ export default {
 
 <style scoped>
 .card {
+    color: #000;
     width: 100%;
     min-height: 120px;
-    background: #f1f1f1;
+    background: #f3eeef;
     border-bottom: 1px solid #d4d4d4;
     text-align: left;
     position: relative;

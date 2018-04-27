@@ -118,12 +118,12 @@ p.info {
 }
 
 button {
-  border: 2px solid rgb(83, 182, 215);
+  border: 2px solid #c1f0ff;
   padding: 5px 20px;
   font-size: 18px;
   width: 90%;
   cursor: pointer;
-  color: rgb(83, 182, 215);
+  color: #c1f0ff;
   margin-bottom: 30px;
 }
 button:hover:not(.disabled) {
