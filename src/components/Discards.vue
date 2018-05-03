@@ -55,6 +55,9 @@ span.help {
 .discards {
   position: absolute;
   top: 100px;
+      display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 button {

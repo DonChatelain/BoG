@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <div class="">
+  <div class="card-list">
 
     <Card
       v-for="card in cards"
@@ -36,6 +36,13 @@ export default {
 </template>
 
 <style scoped>
+  .card-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+  }
+
   .hand {
     margin-top: 30px;
   }

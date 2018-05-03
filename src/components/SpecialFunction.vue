@@ -118,18 +118,17 @@ p.info {
 }
 
 button {
-  border: 2px solid #c1f0ff;
+  background: #4b134f;
+  color: white;
   padding: 5px 20px;
   font-size: 18px;
   width: 90%;
+  max-width: 270px;
   cursor: pointer;
-  color: #c1f0ff;
   margin-bottom: 30px;
+  border: none;
 }
-button:hover:not(.disabled) {
-  background: rgb(83, 182, 215);
-  color: white;
-}
+
 button.disabled {
   opacity: 0.2;
   cursor: default;

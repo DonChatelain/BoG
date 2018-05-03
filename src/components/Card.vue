@@ -14,6 +14,7 @@ export default {
   methods: {
       onTap() {
           this.$el.style.left = '400px';
+          this.$el.style.opacity = 0;
           setTimeout(() => this.removeCard(this.cardData), 500);
       }
   }
@@ -43,12 +44,31 @@ export default {
     min-height: 120px;
     background: #f3eeef;
     border-bottom: 1px solid #d4d4d4;
+    border-left: 1px solid #d4d4d4;
+    border-right: 1px solid #d4d4d4;
     text-align: left;
     position: relative;
+    box-sizing: border-box;
     left: 0;
     top: 0;
-    transition: top 200ms;
-    transition: left 500ms;
+    opacity: 1;
+    transition: left 500ms, opacity 300ms;
+    transform: translateZ(0); /* enables HW acceleration */
+    box-shadow: rgba(0,0,0,0.5) 10px 13px 11px 0px
+}
+
+@media screen and (min-width: 700px) {
+    .card {
+        width: 45%;
+        margin: 2%;
+    }
+}
+
+@media screen and (min-width: 1076px) {
+    .card {
+        width: 30%;
+        margin: 1%;
+    }
 }
 
 .card:first-child {

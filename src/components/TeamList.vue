@@ -10,18 +10,31 @@ export default {
   ],
   computed: {
       teamList() {
-          if (Object.keys(this.teams).length & 2 !== 0) {
-              this.teams['placeholder'] = {name: 'Mesoamerican Placeholder'};
-          }
+          console.log(this.teams['Quetzalcoatl & Serpent Priest'])
+        //   if (Object.keys(this.teams).length % 2 !== 0) {
+        //       this.teams['placeholder'] = {name: 'Mesoamerican Placeholder'};
+        //   }
           return this.teams;
       }
   },
   data() {
      return {
+         
      } 
   },
   methods: {
-
+      getPrimaryChar(teamName) {
+          const team = this.teams[teamName];
+          if (team && team.characters) {
+              return `${team.characters[0].name} - <img class="icon" src="static/heart.png" /> ${team.characters[0].health}`;
+          } else return teamName;
+      },
+        getSecondaryChar(teamName) {
+            const team = this.teams[teamName];
+            if (team && team.characters) {
+                return `${team.characters[1].name} - ${team.characters[1].health} health`;
+            } else return '';
+        }
   }
 }
 </script>
@@ -37,10 +50,12 @@ export default {
         <li
             v-for="team in teamList"
             v-bind:key="team.name">
-            <p>{{team.name}}</p>
-            <p class="card-count">Card Count: {{team.cardCount}}</p>
+            <span>{{ team.characters[0].name }} - <img class="" src="static/heart.png" />  {{ team.characters[0].health }}</span>
+            <span>{{ team.characters[1].name }} - <img class="" src="static/heart.png" />  {{ team.characters[1].health }}</span>
+            <p></p>
+            <span class="card-count">Card Count: {{team.cardCount}}</span>
             <div class="icon-container">
-                <p><img class="icon" src="static/heart.png" /> {{team.health}}</p>
+                <!-- <p><img class="icon" src="static/heart.png" /> {{team.health}}</p> -->
                 <p><img class="icon" src="static/attack.png" /> {{team.totalAtk}}</p>
                 <p><img class="icon" src="static/defense.png" /> {{team.totalDef}}</p>
             </div>
@@ -91,6 +106,23 @@ export default {
         justify-content: space-between;
         background: #fff;
         color: #000;
+    }
+
+    li p {
+        margin: 5px;
+    }
+
+    li span:nth-child(1) {
+        font-weight: bold;
+    }
+
+    li span:nth-child(2) {
+        font-size: 13px;
+    }
+
+    li span img {
+        width: 15px;
+        vertical-align: sub;
     }
 
     .icon-container {

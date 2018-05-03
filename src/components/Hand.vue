@@ -47,6 +47,9 @@ export default {
     position: absolute;
     top: 100px;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   section {
     height: 33px;

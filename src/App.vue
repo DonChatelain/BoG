@@ -8,6 +8,18 @@ import { buildDeck, shuffle } from './deckBuilder';
 
 import teamData from '../static/team_data.json'
 
+const POTENTIAL_GAME_NAMES = [
+  'Battle of Gods',
+  'Immortal Fire',
+  'Aligherium',
+  'Tres Leches',
+  'Immortal Battlezone',
+  'Immortal Arena',
+  'Immortal Battlefield',
+  'Immortal Battlegrounds',
+  'Battleground Divinus',
+];
+
 const STARTING_CARD_COUNT = 4;
 const VIEW = {
   HAND: 0,
@@ -51,7 +63,7 @@ export default {
       teamData,
       showInfoPanel: true,
       isHoverDrawPile: false,
-      drawPileText: 'Battle of Gods',
+      drawPileText: 'DRAW CARD',
       VIEW,
       currentView: VIEW.INFO,
       initialized: false,
@@ -63,6 +75,9 @@ export default {
     getView() {
       return this.currentView;
     },
+    randomizeGameName() {
+      return POTENTIAL_GAME_NAMES[Math.floor(Math.random() * (POTENTIAL_GAME_NAMES.length))];
+    }
   },
   methods: {
     setupDeck(teamName){
@@ -129,14 +144,6 @@ export default {
     },
     getTeamByName(name) {
       return teamData[name];
-    },
-    onHoverDrawPile() {
-      this.isHoverDrawPile = true;
-      this.drawPileText = 'DRAW CARD';
-    },
-    offHoverDrawPile() {
-      this.isHoverDrawPile = false;
-      this.drawPileText = 'Battle of Gods';
     },
     // TODO move this logic to special function component
     execSpecialFunction(cardName) {
@@ -207,14 +214,11 @@ export default {
       <div class="drawpile"
         v-on:click="drawCard"
         v-show="initialized"
-        v-bind:class="{ 'hover-drawpile': isHoverDrawPile, 'hidden': getView !== VIEW.HAND }"
-        v-on:mouseover="onHoverDrawPile()"
-        v-on:mouseout="offHoverDrawPile()">
+        v-bind:class="{ 'hover-drawpile': isHoverDrawPile, 'hidden': getView !== VIEW.HAND }">
         <h1>
           {{drawPileText}}
         </h1>
         <h2>
-          <span v-if="!isHoverDrawPile">Draw Pile</span>
            ( {{deck.length}} )
         </h2>
       </div>
@@ -229,9 +233,9 @@ export default {
 
     <h1
       class="main-title"
-      v-if="!initialized && getView === VIEW.INFO"
+      v-if="getView === VIEW.INFO"
       style="width: 100%;">
-      Battle of Gods
+      {{randomizeGameName}}
     </h1>
     
     <Hand
@@ -275,9 +279,15 @@ export default {
 
 <style>
 
-body {
+html {
   background: -webkit-linear-gradient(116deg, #c94b4b, #4b134f);
   background: linear-gradient(116deg, #c94b4b, #4b134f);
+}
+
+body {
+  /* background: -webkit-linear-gradient(116deg, #c94b4b, #4b134f);
+  background: linear-gradient(116deg, #c94b4b, #4b134f); */
+  
   /* background: -webkit-linear-gradient(106deg, #A8CABA, #5D4157);  
   background: linear-gradient(106deg, #A8CABA, #5D4157);  */
 
@@ -302,6 +312,7 @@ body {
 
 h1.main-title {
   margin: 100px auto 50px auto;
+ 
   text-shadow: #4b134f 3px 3px 0px, #4b134f 4px 4px 0px, #4b134f 5px 5px 0px, #4b134f 6px 6px 0px, #4b134f 7px 7px 0px, #4b134f 8px 8px 0px, #4b134f 9px 9px 0px, #4b134f 10px 10px 0px, #4b134f 11px 11px 0px, #4b134f 12px 12px 0px, #4b134f 13px 13px 0px, #4b134f 14px 14px 0px;
 }
 
@@ -353,8 +364,9 @@ header button {
   box-shadow: 0 0 1px 0 rgb(197, 197, 197);
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-  font-size: 11px;
+  font-size: 15px;
   background: rgba(0,0,0,0.1);
+  padding: 2px;
 }
 
 .button-topright {
@@ -368,6 +380,8 @@ header button {
   top: 0;
   right: 0;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+  font-size: 15px !important;
+  padding: 2px;
 }
 
 .button-topleft {
@@ -381,6 +395,7 @@ header button {
   left: 0;
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+  padding: 2px;
 }
 
 button {

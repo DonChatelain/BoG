@@ -27,7 +27,7 @@ module.exports = function(rows) {
         teamName = row[COL.TEAM_NAME];
         const team = new Team(teamName);
         // add primary character
-        team.addCharacter(row[COL.CHAR_NAME]);
+        team.addCharacter(row[COL.CHAR_NAME], row[COL.HEALTH]);
         // primary character health
         team.addHealth(row[COL.HEALTH]);
         // deck color class + add basic cards
@@ -38,7 +38,7 @@ module.exports = function(rows) {
   
       } else if (row[COL.CHAR_NAME] != '' && row[COL.TEAM_NAME] != null) {
         // adding support character + health
-        teams[teamName].addCharacter(row[COL.CHAR_NAME]);
+        teams[teamName].addCharacter(row[COL.CHAR_NAME], row[COL.HEALTH]);
         teams[teamName].addHealth(row[COL.HEALTH]);
         // teams[teamName].setSupportClass(row[COL.DECK_CLASS]); // instead we're now just adding 2x primary char basic cards for all to share
       }
@@ -67,11 +67,11 @@ function Team(name) {
     this.totalAtk = 0;
     this.totalDef = 0;
     this.deckClass = null;
-    this.supportClass = null;
+    // this.supportClass = null;
     this.characters = [];
     this.cards = [];
-    this.addCharacter = (char) => {
-      this.characters.push(char);
+    this.addCharacter = (name, health) => {
+      this.characters.push({ name, health: parseInt(health, 10) });
     };
     this.addCard = (card) => {
       this.cardCount++;
@@ -104,31 +104,31 @@ function Team(name) {
         }
       });
     };
-    this.setSupportClass = (type) => {
-      this.supportClass = type;
-      let basicCards;
-      if (type === 'MAJOR') {
-        basicCards = CLASSES[this.deckClass];
-        if (!basicCards) return console.warn('Cannot find deck class: ', color);
+    // this.setSupportClass = (type) => {
+    //   this.supportClass = type;
+    //   let basicCards;
+    //   if (type === 'MAJOR') {
+    //     basicCards = CLASSES[this.deckClass];
+    //     if (!basicCards) return console.warn('Cannot find deck class: ', color);
 
-        basicCards.forEach(c => {
-          const card = Object.assign({}, c);
-          for (let i = 0; i < card.qty; i++) {
-            card.owner = this.characters[1]; // support char (error for Fenrir & Jormungand)
-            this.addCard(card);
-          }
-        });
-      } else if (type === 'MINOR') {
-        basicCards = CLASSES['MINOR_WEAK'];
+    //     basicCards.forEach(c => {
+    //       const card = Object.assign({}, c);
+    //       for (let i = 0; i < card.qty; i++) {
+    //         card.owner = this.characters[1]; // support char (error for Fenrir & Jormungand)
+    //         this.addCard(card);
+    //       }
+    //     });
+    //   } else if (type === 'MINOR') {
+    //     basicCards = CLASSES['MINOR_WEAK'];
 
-        basicCards.forEach(c => {
-          const card = Object.assign({}, c);
-          for (let i = 0; i < card.qty; i++) {
-            card.owner = this.characters[1];
-            this.addCard(card);
-          }
-        });
-      }
-    }
+    //     basicCards.forEach(c => {
+    //       const card = Object.assign({}, c);
+    //       for (let i = 0; i < card.qty; i++) {
+    //         card.owner = this.characters[1];
+    //         this.addCard(card);
+    //       }
+    //     });
+    //   }
+    // }
   }
   
