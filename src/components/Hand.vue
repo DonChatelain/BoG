@@ -28,7 +28,7 @@ export default {
   <div>
     <section>
       <span>Current Hand ({{cards.length}})</span>
-      <span class="help">Double-tap a card to play it</span>
+      <span class="help">Swipe right or long-press a card to play it </br> (double click on desktop)</span>
     </section>
     
     <div class="hand">
@@ -45,14 +45,14 @@ export default {
 <style scoped>
   .hand {
     position: absolute;
-    top: 100px;
+    top: 120px;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
   }
   section {
-    height: 33px;
+    height: 50px;
     margin: 3px auto;
     width: 100%;
     display: flex;

@@ -1,22 +1,18 @@
 import guid from 'guid';
 
-import CLASS from './deck_classes';
-
 export { buildDeck, shuffle };
 
 function buildDeck (teamData) {
     const deck = [];
     teamData.cards.forEach((card, i) => {
-        // HACK!!!!!
-        if (!card.name && i % 2 === 0) card.name = 'Basic - Ranged';
-        else if (!card.name) card.name = 'Basic';
         deck.push(new Card(card));
     });    
 
     console.log(`generated deck of ${deck.length} cards`);
     console.log('deck', deck);
-    console.log('basic ranged count:', deck.filter(c => c.name === 'Basic - Ranged').length);
-    console.log('basic count: ', deck.filter(c => c.name === 'Basic'));
+    console.log('special card count: ', deck.filter(c => c.name !== 'Basic').length)
+    console.log('basic melee count: ', deck.filter(c => c.name === 'Basic' && !c.info).length);
+    console.log('basic ranged count:', deck.filter(c => c.info === 'Ranged').length);
     return shuffle(deck);
 }
 

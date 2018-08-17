@@ -8,19 +8,30 @@ import { buildDeck, shuffle } from './deckBuilder';
 
 import teamData from '../static/team_data.json'
 
+const STARTING_CARD_COUNT = 4;
+const MAX_CARDS_IN_HAND = 10;
+
+// MUST BE UPDATED IF ANY OF THESE CARD NAMES CHANGE
+const SPECIAL_FUNCTION_CARDS = {
+  DIVINE_SIGHT: 'Divine Sight',
+  VALKYRIE_TOWER: 'Valkyrie Tower',
+  HARVEST_MOON: 'Harvest Moon',
+  ANIMAL_SACRIFICE: 'Animal Sacrifice',
+  SHAPESHIFTING: 'Shapeshifting',
+}
+
 const POTENTIAL_GAME_NAMES = [
   'Battle of Gods',
   'Immortal Fire',
-  'Aligherium',
-  'Tres Leches',
+  'Immortal Tournament',
   'Immortal Battlezone',
-  'Immortal Arena',
   'Immortal Battlefield',
-  'Immortal Battlegrounds',
   'Battleground Divinus',
+  'Tournament of Nyx',
+  'Game of Nyx',
+  'Tournament Eternal'
 ];
 
-const STARTING_CARD_COUNT = 4;
 const VIEW = {
   HAND: 0,
   INFO: 1,
@@ -28,22 +39,6 @@ const VIEW = {
   TEAM_LIST: 3,
   FUNCTION: 4,
 };
-// MUST BE UPDATED IF ANY OF THESE CARD NAMES CHANGE
-const SPECIAL_FUNCTION_CARDS = {
-  EYE_OF_HORUS: 'Eye of Horus',
-  VALKYRIE_TOWER: 'Valkyrie Tower',
-  HARVEST_MOON: 'Harvest Moon',
-  ANIMAL_SACRIFICE: 'Animal Sacrifice',
-}
-
-window.onbeforeunload = confirmNavigateAway;
-window.onpagehide = confirmNavigateAway;
-
-function confirmNavigateAway (e) {
-  const dialogText = 'All data will be lost';
-  e.returnValue = dialogText;
-  return dialogText;
-}
 
 export default {
   name: 'App',
@@ -148,11 +143,11 @@ export default {
     // TODO move this logic to special function component
     execSpecialFunction(cardName) {
       switch(cardName) {
-        case SPECIAL_FUNCTION_CARDS.EYE_OF_HORUS:
+        case SPECIAL_FUNCTION_CARDS.DIVINE_SIGHT:
           // choose 1 card from deck and move into hand, and reshuffle deck
           this.specialFunctionData = {
             name: cardName,
-            info: 'Double-tap one card from your deck to place into your hand; Your deck will then be reshuffled',
+            info: 'Choose one card from your deck to place into your hand; Your deck will then be reshuffled',
           };
         break;
         case SPECIAL_FUNCTION_CARDS.VALKYRIE_TOWER: 
@@ -174,6 +169,13 @@ export default {
           this.specialFunctionData = {
             name: cardName,
             info: 'View the top 4 cards from your deck; double-tap one to place it into your hand; The remaining 3 cards will be placed on top of your draw pile bottom-first (i.e. the card on top here will be the next card you draw)'
+          }
+        break;
+        case SPECIAL_FUNCTION_CARDS.SHAPESHIFTING:
+          // Steal an opponent's basic card- not easy to implement here, so just explain what to do
+          this.specialFunctionData = {
+            name: cardName,
+            info: 'Steal an opponent\'s card. Simply write down the card values and play it like your own. Does not need to be played immediately'
           }
         break;
         default:

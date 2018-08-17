@@ -22,11 +22,12 @@ export default {
 </script>
 
 <template>
-  <v-touch class="card"
+  <div class="card"
     v-bind:class="{ disabled: this.isCardChosen === true }"
-    v-on:tap="onTap"
-    v-bind:tap-options="{ taps: 2, threshold: 10 }">
-    
+    v-on:dblclick="onTap"
+    v-touch:swipe.right="onTap"
+    v-touch:longtap="onTap">
+
     <h1>{{cardData.owner}}</h1>
     <div class="name-and-numbers">
         <h2>{{ cardData.name }}</h2>
@@ -34,7 +35,7 @@ export default {
     </div>
     <p class="info">{{cardData.info}}</p>
 
-  </v-touch>
+  </div>
 </template>
 
 <style scoped>

@@ -38,7 +38,7 @@ export default {
           // 4 cards
           this.cardsFromDeck = this.deck.splice(0,4);
         break;
-        case this.specialFunctionCards.EYE_OF_HORUS: 
+        case this.specialFunctionCards.DIVINE_SIGHT: 
           // all deck
           this.cardsFromDeck = this.deck.splice(0);
         break;
@@ -64,7 +64,7 @@ export default {
         this.cardsFromDeck.splice(foundIndex, 1);
         this.returnToDeck(this.cardsFromDeck);
         this.removeCard(card);
-        if (this.specialFunctionData.name === this.specialFunctionCards.EYE_OF_HORUS
+        if (this.specialFunctionData.name === this.specialFunctionCards.DIVINE_SIGHT
           || this.specialFunctionData.name === this.specialFunctionCards.VALKYRIE_TOWER) {
           this.shuffle();
           this.viewHand(); // should probably just call this.execSpecialFunction()

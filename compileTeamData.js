@@ -32,7 +32,6 @@ module.exports = function(rows) {
         team.addHealth(row[COL.HEALTH]);
         // deck color class + add basic cards
         team.setDeckClass(row[COL.DECK_CLASS]);
-        team.setDeckClass(row[COL.DECK_CLASS]); // HACK - adding same basic cards twice for all chars to share
   
         teams[teamName] = team;
   
@@ -75,16 +74,6 @@ function Team(name) {
     };
     this.addCard = (card) => {
       this.cardCount++;
-      if (card.attack === '*') {
-        // should we add an average number for the total attack ?
-      } else if (!isNaN(parseInt(card.attack))) {
-        this.totalAtk += parseInt(card.attack);
-      }
-      if (card.defense === '*') {
-        // should we add an average number for the total defense ?
-      } else if (!isNaN(parseInt(card.defense))) {
-        this.totalDef += parseInt(card.defense);
-      }
       this.cards.push(card);
     }
     this.addHealth = (health) => {
@@ -93,42 +82,21 @@ function Team(name) {
     };
     this.setDeckClass = (color) => {
       this.deckClass = color;
-      const basicCards = CLASSES[color];
-      if (!basicCards) return console.warn('Cannot find deck class: ', color);
-      // add basic cards for primary char
-      basicCards.forEach(c => {
+      // add basic cards for team
+      const basicCardClass = CLASSES.find(cls => cls.colorClass === color);
+      if (!basicCardClass) return console.error('cannot find basic card class', color);
+      basicCardClass.cards.forEach(c => {
         const card = Object.assign({}, c);
         for (let i = 0; i < card.qty; i++) {
           card.owner = this.name;
+          card.name = 'Basic';
+          if (card.rng) {
+            card.info = 'Ranged';
+          }
           this.addCard(card);
         }
-      });
+      })
+
     };
-    // this.setSupportClass = (type) => {
-    //   this.supportClass = type;
-    //   let basicCards;
-    //   if (type === 'MAJOR') {
-    //     basicCards = CLASSES[this.deckClass];
-    //     if (!basicCards) return console.warn('Cannot find deck class: ', color);
-
-    //     basicCards.forEach(c => {
-    //       const card = Object.assign({}, c);
-    //       for (let i = 0; i < card.qty; i++) {
-    //         card.owner = this.characters[1]; // support char (error for Fenrir & Jormungand)
-    //         this.addCard(card);
-    //       }
-    //     });
-    //   } else if (type === 'MINOR') {
-    //     basicCards = CLASSES['MINOR_WEAK'];
-
-    //     basicCards.forEach(c => {
-    //       const card = Object.assign({}, c);
-    //       for (let i = 0; i < card.qty; i++) {
-    //         card.owner = this.characters[1];
-    //         this.addCard(card);
-    //       }
-    //     });
-    //   }
-    // }
   }
   

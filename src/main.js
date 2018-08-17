@@ -3,9 +3,14 @@
 import Vue from 'vue';
 import App from './App';
 import routes from './routes';
-import VueTouch from 'vue-touch';
+import Vue2TouchEvents from 'vue2-touch-events'
 
-Vue.use(VueTouch, {name: 'v-touch'});
+Vue.use(Vue2TouchEvents, {
+  disableClick: true,
+  tapTolerance: 10,
+  swipeTolerance: 30,
+  longTapTimeInterval: 400
+});
 Vue.config.productionTip = false
 
 Vue.mixin({
@@ -15,13 +20,11 @@ Vue.mixin({
         var t2 = e.timeStamp;
         var t1 = e.currentTarget.dataset.lastTouch || t2;
         var dt = t2 - t1;
-        // var fingers = e.touches.length;
         e.currentTarget.dataset.lastTouch = t2;
       
-        if (!dt || dt > 500) return; // not double-tap
+        if (!dt || dt > 500) return; // dont double-tap
       
         e.preventDefault();
-        // e.target.click();
       }
     }
   }
