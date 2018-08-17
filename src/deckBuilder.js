@@ -39,10 +39,13 @@ function Card (opts) {
     this.guid = guid.raw();
     this.name = opts.name || 'Basic';
     this.owner = opts.owner;
-    this.info = opts.info;
-    this.atk = opts.attack || 0;
-    this.def = opts.defense || 0;
+    this.effect = opts.effect;
+    this.atk = opts.atk || 0;
+    this.def = opts.def || 0;
 
-    if (opts.info == null) delete this.info;
+    if (this.def == -1) this.def = '*';
+    if (this.atk == -1) this.atk = '*';
+
+    if (opts.effect == null) delete this.effect;
 }
 

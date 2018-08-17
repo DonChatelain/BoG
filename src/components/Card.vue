@@ -33,7 +33,7 @@ export default {
         <h2>{{ cardData.name }}</h2>
         <p class="atk-def">{{cardData.atk}} / {{cardData.def}}</p>
     </div>
-    <p class="info">{{cardData.info}}</p>
+    <p class="info">{{cardData.effect}}</p>
 
   </div>
 </template>

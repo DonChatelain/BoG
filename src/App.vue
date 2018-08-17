@@ -5,8 +5,7 @@ import GodInfo from './components/GodInfo';
 import SpecialFunction from './components/SpecialFunction';
 
 import { buildDeck, shuffle } from './deckBuilder';
-
-import teamData from '../static/team_data.json'
+import ServiceWorker from './ServiceWorker.js';
 
 const STARTING_CARD_COUNT = 4;
 const MAX_CARDS_IN_HAND = 10;
@@ -56,14 +55,23 @@ export default {
     GodInfo,
     SpecialFunction,
   },
-  data() {
+  created() {
+    ServiceWorker
+      .fetchAndCompileAllData()
+      .then(result => {
+        console.log('fetch result', result);
+        this.teamData = result;
+      })
+      .catch(err => console.error('fetch error:', err));
+  },
+  data() { 
     return {
       teamName: 'default',
       deck: [],
       cards: [],
       discardPile: [],
       showDiscardPile: false,
-      teamData,
+      teamData: {},
       showInfoPanel: true,
       isHoverDrawPile: false,
       drawPileText: 'DRAW CARD',
@@ -146,7 +154,7 @@ export default {
       this.discardPile = [];
     },
     getTeamByName(name) {
-      return teamData[name];
+      return this.teamData[name];
     },
     // TODO move this logic to special function component
     execSpecialFunction(cardName) {

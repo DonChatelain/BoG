@@ -67,10 +67,8 @@ export default {
       if (foundIndex !== -1) {
         this.cardsFromDeck.splice(foundIndex, 1);
         if (this.specialFunctionData.name === this.specialFunctionCards.HARVEST_MOON) {
-          console.log('return to discards')
           this.returnToDiscards(this.cardsFromDeck)
         } else {
-          console.log('return to drawpile')
           this.returnToDeck(this.cardsFromDeck);
         }
         this.removeCard(card);

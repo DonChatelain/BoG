@@ -16,10 +16,11 @@ export default {
     'viewTeamList',
   ],
   computed: {
+    teams() { return Object.keys(this.characters) }
   },
   data() {
     return {
-      teams: Object.keys(this.characters),
+      // teams: Object.keys(this.characters),
       selectedTeamName: this.teamName,
       init: (this.teamName !== 'default'),
       showingTeamList: false,
