@@ -84,7 +84,7 @@ function Team(name) {
       this.deckClass = color;
       // add basic cards for team
       const basicCardClass = CLASSES.find(cls => cls.colorClass === color);
-      if (!basicCardClass) return console.error('cannot find basic card class', color);
+      if (!basicCardClass) return console.error('cannot find basic card class; color:', color, 'team:', this.name);
       basicCardClass.cards.forEach(c => {
         const card = Object.assign({}, c);
         for (let i = 0; i < card.qty; i++) {

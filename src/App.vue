@@ -40,6 +40,14 @@ const VIEW = {
   FUNCTION: 4,
 };
 
+// window.onbeforeunload = confirmNavigateAway;
+// window.onpagehide = confirmNavigateAway;
+function confirmNavigateAway (e) {
+  const dialogText = 'All data will be lost';
+  e.returnValue = dialogText;
+  return dialogText;
+}
+
 export default {
   name: 'App',
   components: {
@@ -161,7 +169,7 @@ export default {
           // shuffle discards into deck
           this.specialFunctionData = {
             name: cardName,
-            info: 'Your discard pile has been shuffled into your deck'
+            info: 'Search through your discard pile and place one card into your hand'
           };
         break;
         case SPECIAL_FUNCTION_CARDS.ANIMAL_SACRIFICE: 
@@ -186,13 +194,11 @@ export default {
         this.viewFunction();
       }
     },
-    shuffleDiscardsIntoDeck() {
-      console.log('shuffle discards into deck');
-      let deck = this.deck.concat(this.discardPile.splice(0));
-      this.deck = shuffle(deck);
-    },
     returnToDeck(cards) {
       this.deck = cards.concat(this.deck);
+    },
+    returnToDiscards(cards) {
+      this.discardPile = cards;
     },
     shuffle() {
       this.deck = shuffle(this.deck);
@@ -269,10 +275,11 @@ export default {
       v-bind:specialFunctionData="specialFunctionData"
       v-bind:specialFunctionCards="specialFunctionCards"
       v-bind:viewHand="viewHand"
-      v-bind:shuffleDiscardsIntoDeck="shuffleDiscardsIntoDeck"
+      v-bind:discardPile="discardPile"
       v-bind:deck="deck"
       v-bind:removeCard="removeCard"
       v-bind:returnToDeck="returnToDeck"
+      v-bind:returnToDiscards="returnToDiscards"
       v-bind:shuffle="shuffle">
     </SpecialFunction>
     

@@ -97,7 +97,12 @@ section {
 }
 
 select {
-  color: #fff;
+  -webkit-appearance: none;
+  height: 35px;
+  width: 250px;
+  font-size: 0.9em;
+  padding: 0 7px;
+  border-radius: 0;
 }
 
 </style>

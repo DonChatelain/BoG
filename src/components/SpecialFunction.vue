@@ -13,17 +13,17 @@ export default {
     'specialFunctionCards',
     'viewHand',
     'deck',
-    'shuffleDiscardsIntoDeck',
+    'discardPile',
     'returnToDeck',
+    'returnToDiscards',
     'removeCard',
     'shuffle',
   ],
   data() {
     return {
-      // finished: false || this.specialFunctionData.name === this.specialFunctionCards.HARVEST_MOON,
-      showCardList: this.specialFunctionData.name !== this.specialFunctionCards.HARVEST_MOON, 
+      showCardList: this.specialFunctionData.name !== this.specialFunctionCards.SHAPESHIFTING, 
       cardsFromDeck: [],
-      isCardChosen: false || this.specialFunctionData.name === this.specialFunctionCards.HARVEST_MOON,
+      isCardChosen: false || this.specialFunctionData.name === this.specialFunctionCards.SHAPESHIFTING,
     }
   },
   created() {
@@ -42,27 +42,37 @@ export default {
           // all deck
           this.cardsFromDeck = this.deck.splice(0);
         break;
+        case this.specialFunctionCards.HARVEST_MOON:
+          // all discards
+          const cards = Array.from(this.discardPile);
+          this.cardsFromDeck = cards.filter(x => x.name !== this.specialFunctionCards.HARVEST_MOON);
+          console.log(this.cardsFromDeck)
+        case this.specialFunctionCards.SHAPESHIFTING:
+          
         default: break;
       }
   },
   methods: {
     execSpecialFunction() {      
       switch(this.specialFunctionData.name) {
-        
-        case this.specialFunctionCards.HARVEST_MOON:
-          this.shuffleDiscardsIntoDeck();
-        break;
-
         default: break;
       }
       window.scrollTo(0, 0);
       this.viewHand();
     },
+
+    // jesus this method alone should be reason for a new app
     chooseCard(card) {
       const foundIndex = this.cardsFromDeck.findIndex(c => c.guid === card.guid);
       if (foundIndex !== -1) {
         this.cardsFromDeck.splice(foundIndex, 1);
-        this.returnToDeck(this.cardsFromDeck);
+        if (this.specialFunctionData.name === this.specialFunctionCards.HARVEST_MOON) {
+          console.log('return to discards')
+          this.returnToDiscards(this.cardsFromDeck)
+        } else {
+          console.log('return to drawpile')
+          this.returnToDeck(this.cardsFromDeck);
+        }
         this.removeCard(card);
         if (this.specialFunctionData.name === this.specialFunctionCards.DIVINE_SIGHT
           || this.specialFunctionData.name === this.specialFunctionCards.VALKYRIE_TOWER) {
