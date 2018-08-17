@@ -14,4 +14,4 @@ yarn-error.log*
 *.sln
 
 client_secret.json
-
+docs/
