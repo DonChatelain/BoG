@@ -43,6 +43,7 @@ function Card (opts) {
     this.atk = opts.atk || 0;
     this.def = opts.def || 0;
 
+    if (opts.rng) this.effect = 'Ranged'; 
     if (this.def == -1) this.def = '*';
     if (this.atk == -1) this.atk = '*';
 

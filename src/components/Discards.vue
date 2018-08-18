@@ -10,6 +10,11 @@ export default {
     'cards',
     'removeCard',
   ],
+  data() {
+    return {
+      swipeDirection: 'left',
+    }
+  }
 }
 </script>
 
@@ -17,14 +22,15 @@ export default {
   <div>
     <section>
       <span>Discard Pile ({{cards.length}})</span>
-      <span class="help">Double-tap a card to return it to your hand</span>
+      <span class="help">Swipe left or long-press a card to return to hand </br> (double click on desktop)</span>
     </section>
     <div class="discards">
       <Card
         v-for="card in cards"
         v-bind:cardData="card"
         v-bind:removeCard="removeCard"
-        v-bind:key="card.guid">
+        v-bind:key="card.guid"
+        v-bind:swipeDirection="swipeDirection">
       </Card>
     </div>
   </div>
@@ -54,10 +60,11 @@ span.help {
 
 .discards {
   position: absolute;
-  top: 100px;
-      display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  top: 120px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 button {

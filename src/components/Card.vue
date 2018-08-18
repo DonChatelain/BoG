@@ -5,6 +5,7 @@ export default {
       'cardData',
       'removeCard',
       'isCardChosen',
+      'swipeDirection',
   ],
   data () {
     return {
@@ -13,7 +14,11 @@ export default {
   },
   methods: {
       onTap() {
-          this.$el.style.left = '400px';
+          if (this.swipeDirection === 'left') {
+            this.$el.style.left = '-400px';
+          } else {
+            this.$el.style.left = '400px';
+          }
           this.$el.style.opacity = 0;
           setTimeout(() => this.removeCard(this.cardData), 500);
       }
@@ -25,8 +30,25 @@ export default {
   <div class="card"
     v-bind:class="{ disabled: this.isCardChosen === true }"
     v-on:dblclick="onTap"
+    v-touch:swipe.left="onTap"
+    v-touch:longtap="onTap"
+    v-if="swipeDirection === 'left'">
+
+    <h1>{{cardData.owner}}</h1>
+    <div class="name-and-numbers">
+        <h2>{{ cardData.name }}</h2>
+        <p class="atk-def">{{cardData.atk}} / {{cardData.def}}</p>
+    </div>
+    <p class="info">{{cardData.effect}}</p>
+
+  </div>
+
+  <div class="card"
+    v-bind:class="{ disabled: this.isCardChosen === true }"
+    v-on:dblclick="onTap"
     v-touch:swipe.right="onTap"
-    v-touch:longtap="onTap">
+    v-touch:longtap="onTap"
+    v-else>
 
     <h1>{{cardData.owner}}</h1>
     <div class="name-and-numbers">

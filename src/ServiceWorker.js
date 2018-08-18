@@ -58,7 +58,6 @@ class ServiceWorker {
             if (team.deckClass === cardClass.colorClass) {
               cardClass.cards.forEach(cardTemplate => {
                 for (let i = 0; i < cardTemplate.qty; i++) {
-                  if (cardTemplate.rng) cardTemplate.effect = 'Ranged';
                   team.cards.push(cardTemplate);
                 }
               })

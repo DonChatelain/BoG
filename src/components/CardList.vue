@@ -10,6 +10,7 @@ export default {
     'cards',
     'removeCard',
     'isCardChosen',
+    'swipeDirection'
   ],
   data() {
     return {
@@ -30,7 +31,8 @@ export default {
       v-bind:cardData="card"
       v-bind:removeCard="removeCard"
       v-bind:key="card.guid"
-      v-bind:isCardChosen="isCardChosen">
+      v-bind:isCardChosen="isCardChosen"
+      v-bind:swipeDirection="swipeDirection">
     </Card>
   </div>
 </template>

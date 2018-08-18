@@ -58,10 +58,7 @@ export default {
   created() {
     ServiceWorker
       .fetchAndCompileAllData()
-      .then(result => {
-        console.log('fetch result', result);
-        this.teamData = result;
-      })
+      .then(result => this.teamData = result)
       .catch(err => console.error('fetch error:', err));
   },
   data() { 
@@ -102,6 +99,9 @@ export default {
     },
     drawCard() {
       if (this.deck.length > 0) {
+        if (this.cards.length >= MAX_CARDS_IN_HAND) {
+          return alert('Max Card Limit Reached- Discard a card to draw another');
+        }
         this.cards.unshift(this.deck.shift());
       }
     },
