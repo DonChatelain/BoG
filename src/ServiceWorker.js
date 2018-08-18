@@ -12,6 +12,12 @@ class ServiceWorker {
     });
   }
 
+  /**
+   * This method is awful
+   * I have dishonored my family by writing such an abomination
+   * I'm so so sorry
+   * Forgive me, bb jesus
+   */
   fetchAndCompileAllData() {
     return new Promise((resolve, reject) => {
       Promise.all([
@@ -75,11 +81,7 @@ class ServiceWorker {
   }
 
   fetchBscards() {
-    return Promise.all([
-      this.fetch('basiccardclasses/RED'),
-      this.fetch('basiccardclasses/BLUE'),
-      this.fetch('basiccardclasses/GREEN'),
-    ]);
+    return this.fetch('basiccardclasses/all');
   }
   fetchSpCards() {
     return this.fetch('specialcards?limit=100');

@@ -11,8 +11,8 @@ function buildDeck (teamData) {
     console.log(`generated deck of ${deck.length} cards`);
     console.log('deck', deck);
     console.log('special card count: ', deck.filter(c => c.name !== 'Basic').length)
-    console.log('basic melee count: ', deck.filter(c => c.name === 'Basic' && !c.info).length);
-    console.log('basic ranged count:', deck.filter(c => c.info === 'Ranged').length);
+    console.log('basic melee count: ', deck.filter(c => c.name === 'Basic' && !c.effect).length);
+    console.log('basic ranged count:', deck.filter(c => c.effect === 'Ranged').length);
     return shuffle(deck);
 }
 
@@ -46,7 +46,5 @@ function Card (opts) {
     if (opts.rng) this.effect = 'Ranged'; 
     if (this.def == -1) this.def = '*';
     if (this.atk == -1) this.atk = '*';
-
-    if (opts.effect == null) delete this.effect;
 }
 
