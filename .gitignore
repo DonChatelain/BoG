@@ -15,6 +15,5 @@ yarn-error.log*
 *.sln
 
 client_secret.json
-docs/
 .env
 src/config.js
